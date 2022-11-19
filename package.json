@@ -1,0 +1,32 @@
+{
+  "name": "poll_shark",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "SET NODE_ENV=development&&nodemon server.js",
+    "start:prod": "NODE_ENV=production nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "express-mongo-sanitize": "^2.1.0",
+    "google-auth-library": "^7.11.0",
+    "helmet": "^4.6.0",
+    "html-to-text": "^8.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.14",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.4",
+    "nodemailer": "^6.7.2",
+    "nodemon": "^2.0.19",
+    "pug": "^2.0.4",
+    "sharp": "^0.29.3",
+    "validator": "^10.11.0",
+    "xss-clean": "^0.1.1"
+  }
+}

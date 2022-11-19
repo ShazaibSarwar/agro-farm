@@ -32,7 +32,7 @@ router
 router
   .route("/:id")
   .get(userController.getUser)
-  .patch(userController.updateUser)
+  .patch(userController.updateUserByID)
   .delete(userController.deleteUser);
 
 module.exports = router;

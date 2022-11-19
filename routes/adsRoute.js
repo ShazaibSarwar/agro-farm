@@ -1,6 +1,7 @@
 const express = require("express");
 const authController = require("../controllers/authController");
 const adsController = require("../controllers/adsController");
+const { get } = require("mongoose");
 
 const router = express.Router();
 
@@ -21,6 +22,7 @@ router
 
 router
   .route("/:id")
+  .get(adsController.getOneAdd)
   .put(adsController.updateAddByID)
   .patch(adsController.updateAdStatus)
   .delete(adsController.deleteAddByID);

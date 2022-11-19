@@ -96,7 +96,7 @@ exports.getAllAds = catchAsync(async (req, res, next) => {
 
 exports.updateAddByID = catchAsync(async (req, res, next) => {
   console.log(
-    "--------------------------------- In Delete Fn ---------------------------------"
+    "--------------------------------- In Update Ad Fn ---------------------------------"
   );
   let adsResponse = await Ads.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
@@ -144,6 +144,18 @@ exports.updateAdStatus = catchAsync(async (req, res, next) => {
     return next(new AppError("No document found with that ID", 404));
   }
 
+  res.status(200).json({
+    status: "Success",
+    data: { adsResponse },
+  });
+});
+
+
+exports.getOneAdd = catchAsync(async (req, res, next) => {
+  let adsResponse = await Ads.findById(req.params.id);
+  if (!adsResponse) {
+    return next(new AppError("No document found with that ID", 404));
+  }
   res.status(200).json({
     status: "Success",
     data: { adsResponse },

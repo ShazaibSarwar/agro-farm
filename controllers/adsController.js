@@ -81,7 +81,7 @@ exports.createAds = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllAds = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(Ads.find({ user: req.user._id }), req.query)
+  const features = new APIFeatures(Ads.find(), req.query)
     .filter()
     .sort()
     .limitFields()
@@ -98,6 +98,13 @@ exports.updateAddByID = catchAsync(async (req, res, next) => {
   console.log(
     "--------------------------------- In Update Ad Fn ---------------------------------"
   );
+  console.log(' Update add body ------------> ', req.body)
+
+  if (isEmpty(req.body)) {
+    console.log(' in If ------------>  Returned')
+    return next(new AppError("Body cannot be Empty", 304));
+  }
+
   let adsResponse = await Ads.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -112,6 +119,8 @@ exports.updateAddByID = catchAsync(async (req, res, next) => {
     data: { adsResponse },
   });
 });
+
+
 
 exports.deleteAddByID = catchAsync(async (req, res, next) => {
   console.log(
@@ -135,6 +144,7 @@ exports.updateAdStatus = catchAsync(async (req, res, next) => {
     "--------------------------------- In Updaet Status Controller ---------------------------------"
   );
 
+  console.log(' Update Status body ------------> ', req.body)
   let adsResponse = await Ads.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -161,3 +171,8 @@ exports.getOneAdd = catchAsync(async (req, res, next) => {
     data: { adsResponse },
   });
 });
+
+
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}

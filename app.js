@@ -11,6 +11,8 @@ const adsRouter = require("./routes/adsRoute");
 const surveyRouter = require("./routes/surveyRoutes");
 const contactRouter = require("./routes/contactRoutes");
 const mongoSanitize = require("express-mongo-sanitize");
+const bodyParser = require('body-parser')
+const multer = require("multer");
 
 const app = express();
 app.set("view engine", "pug");
@@ -21,7 +23,11 @@ if (process.env.NODE_ENV == "development") {
   app.use(morgan("dev"));
 }
 
-app.use(express.json());
+app.use(express.json())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(multer().array())
+
 app.use(express.static(`${__dirname}/public`));
 app.use(helmet());
 app.use(mongoSanitize());

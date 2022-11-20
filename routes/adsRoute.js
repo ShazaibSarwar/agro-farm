@@ -24,7 +24,12 @@ router
 
 router
   .route("/update/:id")
-  .patch(authController.protect, adsController.updateAddByID)
+  .patch(
+    authController.protect,
+    adsController.uploadTourImages,
+    adsController.resizeTourImages,
+    adsController.updateAddByID
+  )
 
 
 router

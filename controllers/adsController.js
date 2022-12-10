@@ -105,15 +105,17 @@ exports.updateAddByID = catchAsync(async (req, res, next) => {
     return next(new AppError("Body cannot be Empty", 304));
   }
 
-  let adsResponse = await Ads.findByIdAndUpdate(req.params.id, req.body, {
+  await Ads.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
 
+  let adsResponse = await Ads.findById(req.params.id)
   if (!adsResponse) {
     return next(new AppError("No document found with that ID", 404));
   }
 
+  console.log('--------------> ',adsResponse)
   res.status(200).json({
     status: "Success",
     data: { adsResponse },

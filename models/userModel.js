@@ -38,6 +38,12 @@ const userSchema = mongoose.Schema({
   address: {
     type: String,
   },
+  experience: {
+    type: String,
+  },
+  price: {
+    type: Number,
+  },
   CNIC: {
     type: Number,
   },

@@ -30,9 +30,16 @@ router
   .post(userController.createUser);
 
 router
+  .route("/experts")
+  .get(userController.getAllExpertsData)
+
+
+router
   .route("/:id")
   .get(userController.getUser)
   .patch(userController.updateUserByID)
   .delete(userController.deleteUser);
+
+router.route("/getAllExperts").get(userController.getAllExperts)
 
 module.exports = router;

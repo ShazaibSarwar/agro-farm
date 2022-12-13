@@ -19,16 +19,18 @@ const signToken = (id) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const newUser = await User.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    password: req.body.password,
-    confirm_password: req.body.confirm_password,
-    address: req.body.address,
-    CNIC: req.body.CNIC,
-    role: req.body.role,
-  });
+  // const newUser = await User.create({
+  //   firstName: req.body.firstName,
+  //   lastName: req.body.lastName,
+  //   email: req.body.email,
+  //   password: req.body.password,
+  //   confirm_password: req.body.confirm_password,
+  //   address: req.body.address,
+  //   CNIC: req.body.CNIC,
+  //   role: req.body.role,
+  // });
+
+  const newUser = await User.create(req.body);
 
   const token = signToken(newUser._id);
   const url = `https://poll-shark-syedahsanalidev.vercel.app/signin`;

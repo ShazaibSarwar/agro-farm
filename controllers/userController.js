@@ -5,6 +5,8 @@ const multer = require('multer');
 const sharp = require('sharp');
 const User = require("../models/userModel");
 const Survey_Answer = require("../models/surveyAnswersModel")
+const APIFeatures = require("../utils/apiFeatures");
+const Ads = require("../models/adsModel");
 
 // const multerStorage = multer.diskStorage({
 //   destination:(req,file,cb) =>{
@@ -173,12 +175,31 @@ exports.getStats = catchAsync(async (req, res, next) => {
 
 });
 
-
-
-exports.getAllUsers = (req, res) => {
+exports.getAllUsers = async (req, res) => {
+  let users = await User.find()
   res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!'
+    status: 'success',
+    data: {users: users}
+  });
+};
+
+exports.getAllExpertsData = async (req, res) => {
+  // let users = await User.find()
+  // res.status(500).json({
+  //   status: 'success',
+  //   data: {users: users}
+  // });
+
+  const experts = new APIFeatures(User.find(), {role: 'experties'})
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+  const expertData = await experts.query;
+  res.status(200).json({
+    status: "Success",
+    count: expertData.length,
+    data: { expertData },
   });
 };
 exports.getUser = (req, res) => {
@@ -205,3 +226,20 @@ exports.deleteUser = (req, res) => {
     message: 'This route is not yet defined!'
   });
 };
+
+
+
+exports.getAllExperts = catchAsync(async (req, res, next) => {
+  // let experts = await User.find({role: 'experties'})
+  const experts = new APIFeatures(User.find(), {role: 'experties'})
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+  const expertData = await experts.query;
+  res.status(200).json({
+    status: "Success",
+    count: expertData.length,
+    data: { expertData },
+  });
+});

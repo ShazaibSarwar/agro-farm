@@ -95,13 +95,8 @@ exports.getAllAds = catchAsync(async (req, res, next) => {
 });
 
 exports.updateAddByID = catchAsync(async (req, res, next) => {
-  console.log(
-    "--------------------------------- In Update Ad Fn ---------------------------------"
-  );
-  console.log(' Update add body ------------> ', req.body)
-
+  console.log("--------------------------------- In Update Ad Fn ---------------------------------");
   if (isEmpty(req.body)) {
-    console.log(' in If ------------>  Returned')
     return next(new AppError("Body cannot be Empty", 304));
   }
 
@@ -115,10 +110,10 @@ exports.updateAddByID = catchAsync(async (req, res, next) => {
     return next(new AppError("No document found with that ID", 404));
   }
 
-  console.log('--------------> ',adsResponse)
+  console.log('--------------> ', adsResponse)
   res.status(200).json({
     status: "Success",
-    data: { adsResponse },
+    data: {adsResponse},
   });
 });
 
@@ -126,7 +121,7 @@ exports.updateAddByID = catchAsync(async (req, res, next) => {
 
 exports.deleteAddByID = catchAsync(async (req, res, next) => {
   console.log(
-    "--------------------------------- In Delete Fn ---------------------------------"
+      "--------------------------------- In Delete Fn ---------------------------------"
   );
   console.log("res", res);
   const adsResponse = await Ads.findByIdAndDelete(req.params.id);

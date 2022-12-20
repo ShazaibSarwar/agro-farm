@@ -8,7 +8,7 @@ router.post("/signup", authController.signup);
 router.post("/login", authController.login);
 router.post("/forgotPassword", authController.forgotPassword);
 router.post("/sign-in/google", authController.googleSignIn);
-router.patch("/resetPassword/:token", authController.resetPassword);
+
 router.patch(
   "/updateMyPassword",
   authController.protect,
@@ -23,6 +23,7 @@ router.patch(
 );
 // router.patch('/verify',authController.protect, userController.updateStatus);
 // router.get('/user/:id/stats',authController.protect, userController.getStats);
+router.route("/getAllExperts").get(userController.getAllExperts)
 
 router
   .route("/")
@@ -40,6 +41,14 @@ router
   .patch(userController.updateUserByID)
   .delete(userController.deleteUser);
 
-router.route("/getAllExperts").get(userController.getAllExperts)
+
+router.patch("/resetPassword/:token", authController.resetPassword);
+
+router
+  .route("/experts/:id")
+  .get(userController.getSingleExpert)
+  .delete(userController.deleteExpert)
+  .patch(userController.updateExpertByID)
+
 
 module.exports = router;

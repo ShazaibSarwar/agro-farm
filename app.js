@@ -11,8 +11,11 @@ const adsRouter = require("./routes/adsRoute");
 const surveyRouter = require("./routes/surveyRoutes");
 const contactRouter = require("./routes/contactRoutes");
 const mongoSanitize = require("express-mongo-sanitize");
-const bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 const multer = require("multer");
+const stripe = require("stripe")(
+  "sk_test_51MHCC9KQZxZ5ZgrKeVK49TltKb3lpvEHeJSCoxeOiqfijGMATO1qdSLrGFYYT9RLRpfZisu4zfKL4kQ5h5SbJgUD00FqNzJqwB"
+);
 
 const app = express();
 app.set("view engine", "pug");
@@ -23,9 +26,9 @@ if (process.env.NODE_ENV == "development") {
   app.use(morgan("dev"));
 }
 
-app.use(express.json())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(multer().array())
 
 app.use(express.static(`${__dirname}/public`));
@@ -35,6 +38,20 @@ app.use(xss());
 
 app.get("/", (req, res) => {
   res.status(200).send("Hello from server");
+});
+
+app.post("/create-payment-intent", async (req, res) => {
+  const { items, price } = req.body;
+
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: price,
+    currency: "usd",
+  });
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  });
 });
 
 app.use("/api/v1/users", userRouter);

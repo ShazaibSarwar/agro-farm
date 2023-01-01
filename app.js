@@ -10,6 +10,8 @@ const userRouter = require("./routes/userRoutes");
 const adsRouter = require("./routes/adsRoute");
 const surveyRouter = require("./routes/surveyRoutes");
 const contactRouter = require("./routes/contactRoutes");
+const chatRouter = require("./routes/chatRoutes");
+const messageRouter = require("./routes/messageRoutes");
 const mongoSanitize = require("express-mongo-sanitize");
 const bodyParser = require('body-parser')
 const multer = require("multer");
@@ -20,7 +22,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(cors());
 app.options("*", cors());
 if (process.env.NODE_ENV == "development") {
-  app.use(morgan("dev"));
+    app.use(morgan("dev"));
 }
 
 app.use(express.json())
@@ -34,16 +36,18 @@ app.use(mongoSanitize());
 app.use(xss());
 
 app.get("/", (req, res) => {
-  res.status(200).send("Hello from server");
+    res.status(200).send("Hello from server");
 });
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/surveys", surveyRouter);
 app.use("/api/v1/contactus", contactRouter);
 app.use("/api/v1/ads", adsRouter);
+app.use("/api/v1/chats", chatRouter);
+app.use("/api/v1/messages", messageRouter);
 
 app.all("*", (req, res, next) => {
-  next(new AppError(`Canont find ${req.originalUrl} on this server`, 404));
+    next(new AppError(`Cannot find ${req.originalUrl} on this server`, 404));
 });
 
 app.use(globalErrorHandler);

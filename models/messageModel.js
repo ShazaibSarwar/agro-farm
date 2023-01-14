@@ -5,6 +5,7 @@ const messageSchema = mongoose.Schema({
     content: {type: String, trim: true},
     chat: {type: mongoose.Schema.Types.ObjectId, ref: "Chat"},
     readBy: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
+    file: { type: mongoose.Schema.Types.Mixed, default: null }
 }, {timestamps: true});
 
 const Message = mongoose.model("Message", messageSchema);

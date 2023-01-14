@@ -23,21 +23,18 @@ router
   );
 
 router
-  .route("/update/:id")
-  .patch(
-    authController.protect,
-    adsController.uploadTourImages,
-    adsController.resizeTourImages,
-    adsController.updateAddByID
-  )
-
-
-router
   .route("/:id")
   .get(authController.protect, adsController.getOneAdd)
   .patch(authController.protect, adsController.updateAdStatus)
   .delete(authController.protect, adsController.deleteAddByID);
 
-
+router
+    .route("/:id")
+    .put(
+        authController.protect,
+        adsController.uploadTourImages,
+        adsController.resizeTourImages,
+        adsController.updateAdByID
+    )
 
 module.exports = router;

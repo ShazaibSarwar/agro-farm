@@ -62,13 +62,13 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
 });
 
 exports.createAds = catchAsync(async (req, res, next) => {
-  let { user: userId } = req.body;
-
-  let user = await User.findById(userId);
-
-  if (!user) {
-    return next(new AppError("Invalid user id", 400));
-  }
+  // let { user: userId } = req.body;
+  //
+  // let user = await User.findById(userId);
+  //
+  // if (!user) {
+  //   return next(new AppError("Invalid user id", 400));
+  // }
 
   console.log(req.body);
 
@@ -94,26 +94,15 @@ exports.getAllAds = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.updateAddByID = catchAsync(async (req, res, next) => {
-  console.log("--------------------------------- In Update Ad Fn ---------------------------------");
-  if (isEmpty(req.body)) {
-    return next(new AppError("Body cannot be Empty", 304));
-  }
-
-  await Ads.findByIdAndUpdate(req.params.id, req.body, {
+exports.updateAdByID = catchAsync(async (req, res, next) => {
+console.log("req.body: ", req.body);
+  let ads = await Ads.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-    runValidators: true,
   });
 
-  let adsResponse = await Ads.findById(req.params.id)
-  if (!adsResponse) {
-    return next(new AppError("No document found with that ID", 404));
-  }
-
-  console.log('--------------> ', adsResponse)
   res.status(200).json({
     status: "Success",
-    data: {adsResponse},
+    data: ads,
   });
 });
 

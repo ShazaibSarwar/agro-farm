@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 
 const adsSchema = mongoose.Schema({
-  user: {
-    type: mongoose.Schema.ObjectId,
-    ref: "User",
-    required: [true, "User is required field"],
-  },
+  // user: {
+  //   type: mongoose.Schema.ObjectId,
+  //   ref: "User",
+  //   required: [true, "User is required field"],
+  // },
   title: {
     type: String,
     required: [true, "Ad must have a title"],

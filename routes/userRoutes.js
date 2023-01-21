@@ -31,6 +31,10 @@ router
   .post(userController.createUser);
 
 router
+    .route("/search-user")
+    .get(authController.protect, userController.searchUser);
+
+router
   .route("/experts")
   .get(userController.getAllExpertsData)
 

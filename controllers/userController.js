@@ -6,7 +6,7 @@ const sharp = require('sharp');
 const User = require("../models/userModel");
 const Survey_Answer = require("../models/surveyAnswersModel")
 const APIFeatures = require("../utils/apiFeatures");
-const Ads = require("../models/adsModel");
+const mongoose = require("mongoose");
 
 // const multerStorage = multer.diskStorage({
 //   destination:(req,file,cb) =>{
@@ -124,7 +124,6 @@ exports.updateStatus = catchAsync(async (req, res, next) => {
 
 });
 
-
 exports.updateUserByID = catchAsync(async (req, res, next) => {
     console.log("--------------------------------- In updateUserByID Fn ---------------------------------");
     let userResponse = await User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true,});
@@ -136,6 +135,52 @@ exports.updateUserByID = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "Success",
         data: {userResponse},
+    });
+});
+
+// exports.searchUser = catchAsync(async (req, res, next) => {
+//     const keyword = req.query.search
+//         ? {
+//             $or: [
+//                 { firstName: { $regex: req.query.search, $options: "i" } },
+//                 { lastname: { $regex: req.query.search, $options: "i" } },
+//                 { email: { $regex: req.query.search, $options: "i" } },
+//             ],
+//         }
+//         : {};
+//
+//     // let {user} = req
+//     const users = await User.find(keyword)
+//         // .find({ _id: { $ne: mongoose.Types.ObjectId(user._id) } });
+//
+//     res.status(200).json({
+//         status: "Success",
+//         data: users,
+//     });
+// });
+
+exports.searchUser = catchAsync(async (req, res) => {
+    const { user } = req;
+    const keyword = req.query.search
+        ? {
+            $or: [
+                { firstName: { $regex: req.query.search, $options: "i" } },
+                { lastname: { $regex: req.query.search, $options: "i" } },
+                { email: { $regex: req.query.search, $options: "i" } },
+            ],
+        }
+        : {};
+
+    const users = await User.find({
+        $and: [
+            keyword,
+            { _id: { $ne: user._id } }
+        ]
+    });
+
+    res.status(200).json({
+        status: "Success",
+        data: users,
     });
 });
 
@@ -221,7 +266,7 @@ exports.deleteUser = (req, res) => {
 };
 
 
-exports.getAllExperts = catchAsync(async (req, res, next) => {
+exports.getAllExperts = catchAsync(async (req, res) => {
     // let experts = await User.find({role: 'experties'})
     const experts = new APIFeatures(User.find(), {role: 'experties'})
         .filter()

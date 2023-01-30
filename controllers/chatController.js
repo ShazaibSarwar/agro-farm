@@ -9,17 +9,19 @@ const mongoose = require("mongoose");
  * @access  Private
  */
 exports.createChatForUsers = catchAsync(async (req, res, next) => {
-    const {userId} = req.body;
-    if (!userId) {
-        console.log('UserId param not sent with request');
+
+    const {id} = req.body;
+    console.log('id --->', id);
+
+    if (!id) {
+        console.log('id param not sent with request');
         return next(new AppError("No user found", 404));
     }
-
 
     let isChat = await Chat.find({
         isGroupChat: false,
         $and: [
-            {users: {$elemMatch: {$eq: userId}}},
+            {users: {$elemMatch: {$eq: id}}},
             {users: {$elemMatch: {$eq: req.user._id}}}
         ],
     })
@@ -37,7 +39,7 @@ exports.createChatForUsers = catchAsync(async (req, res, next) => {
         let chatData = {
             chatName: "sender",
             isGroupChat: false,
-            users: [req.user._id, userId],
+            users: [req.user._id, id],
         };
         try {
             const createdChat = await Chat.create(chatData);

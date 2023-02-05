@@ -1,6 +1,7 @@
 const express = require("express");
 const authController = require("../controllers/authController");
 const adsController = require("../controllers/adsController");
+const {upload} = require("../utils/uploader");
 
 const router = express.Router();
 
@@ -17,10 +18,13 @@ router
   .get(adsController.getAllAds)
   .post(
     authController.protect,
-    adsController.uploadTourImages,
-    adsController.resizeTourImages,
+    upload("img/ads").single("imageCover"),
     adsController.createAds
   );
+
+router
+    .route("/search-ads")
+    .get(adsController.searchAdsWithFilters);
 
 router
   .route("/:id")

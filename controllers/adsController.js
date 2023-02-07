@@ -62,14 +62,6 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
 });
 
 exports.createAds = catchAsync(async (req, res) => {
-    // let { user: userId } = req.body;
-    //
-    // let user = await User.findById(userId);
-    //
-    // if (!user) {
-    //   return next(new AppError("Invalid user id", 400));
-    // }
-    console.log(req.body);
 
     const today = new Date().toDateString().replaceAll(' ', '_')
     const uploadPath = `img/ads/${today}/`
@@ -106,14 +98,37 @@ exports.getAllAds = catchAsync(async (req, res, next) => {
 
 exports.updateAdByID = catchAsync(async (req, res, next) => {
     console.log("req.body: ", req.body);
-    let ads = await Ads.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-    });
+    try {
+        if (req.file) {
+            const today = new Date().toDateString().replaceAll(' ', '_')
+            const uploadPath = `img/ads/${today}/`
+            let imagePath = uploadPath + req?.file?.filename;
 
-    res.status(200).json({
-        status: "Success",
-        data: ads,
-    });
+            let ads = await Ads.findByIdAndUpdate(req.params.id, {...req.body, imageCover: imagePath}, {
+                new: true,
+            });
+            return res.status(200).json({
+                status: "Success",
+                data: ads,
+            });
+        }
+
+        let ads = await Ads.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+        });
+
+        return res.status(200).json({
+            status: "Success",
+            data: ads,
+        });
+
+    } catch (error) {
+        console.log("error: ", error);
+        return res.status(500).json({
+            status: "Error",
+            data: error.message,
+        });
+    }
 });
 
 

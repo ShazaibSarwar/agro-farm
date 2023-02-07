@@ -16,11 +16,13 @@ const router = express.Router();
 router
   .route("/")
   .get(adsController.getAllAds)
-  .post(
-    authController.protect,
-    upload("img/ads").single("imageCover"),
-    adsController.createAds
-  );
+
+router.route("/create-ad")
+    .post(
+        authController.protect,
+        upload("img/ads").single("imageCover"),
+        adsController.createAds
+    );
 
 router
     .route("/search-ads")
@@ -36,8 +38,7 @@ router
     .route("/:id")
     .put(
         authController.protect,
-        adsController.uploadTourImages,
-        adsController.resizeTourImages,
+        upload("img/ads").single("imageCover"),
         adsController.updateAdByID
     )
 
